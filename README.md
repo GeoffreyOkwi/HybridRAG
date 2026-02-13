@@ -1,62 +1,114 @@
-HybridRAG – Configurable Hybrid Retrieval-Augmented Generation 
-        Overview 
-HybridRAG is a Streamlit-based Retrieval-Augmented Generation (RAG) system that 
-combines vector similarity search with keyword-based scoring to improve document 
-retrieval relevance. 
-Instead of relying purely on embeddings, this system implements a hybrid scoring 
-mechanism that blends: 
-• Vector similarity score 
-• Keyword match score 
-This allows more accurate and context-aware retrieval. 
- 
-    Architecture 
-User Query 
-↓ 
-Embedding Generation 
-↓ 
-Vector Search (FAISS) 
-↓ 
-Keyword Matching 
-↓ 
-Hybrid Re-ranking 
-↓ 
-Top-k Context Injection 
-↓ 
-LLM Response Generation 
- 
-      Hybrid Scoring Formula 
-The final hybrid score is computed as: 
-FinalScore = (1 / (1 + VectorDistance)) + (β × KeywordMatches) 
-Where: 
-• VectorDistance = FAISS L2 distance (lower is better) 
-• KeywordMatches = number of overlapping query terms 
-• β = keyword weighting factor (currently 0.1) 
-Documents are then re-ranked by HybridScore in descending order. 
- 
-     Tech Stack 
-• Python 
-• Streamlit 
-• FAISS 
-• LangChain 
-• OpenAI API 
- 
-       Installation 
-git clone https://github.com/GeoffreyOkwi/HybridRAG.git 
-cd HybridRAG 
-pip install -r requirements.txt 
-streamlit run app.py 
-Features 
-• Configurable hybrid scoring 
-• Top-k re-ranking 
-• Transparent retrieval logic 
-• Streamlit interactive interface 
-• Chat history support 
-Future Improvements 
-• Add adjustable α parameter via UI 
-• Add visualization of retrieval scores 
-• Deploy on Streamlit Cloud 
-• Add document upload interface 
+HybridRAG – Configurable Hybrid Retrieval-Augmented Generation System
+🚀 Overview
 
-Author 
-Geoffrey Okwi 
-AI Engineer | Retrieval Systems | Applied LLM Systems
+HybridRAG is a Streamlit-based Retrieval-Augmented Generation (RAG) system that combines semantic vector search with lexical keyword reinforcement to improve document retrieval accuracy.
+
+Instead of relying purely on embeddings, this system implements a weighted hybrid scoring mechanism that blends:
+
+Vector similarity (FAISS L2 distance)
+
+Keyword match scoring
+
+Adjustable weighting parameter (α)
+
+This enables tunable retrieval behavior between semantic similarity and exact-term matching.
+
+🧠 System Architecture
+User Query
+   ↓
+Embedding Generation
+   ↓
+Vector Search (FAISS)
+   ↓
+Keyword Matching
+   ↓
+Hybrid Re-ranking
+   ↓
+Top-k Context Injection
+   ↓
+LLM Response Generation
+
+🔬 Hybrid Scoring Formula
+
+Documents are re-ranked using a weighted hybrid score:
+
+HybridScore = α · VectorSim + (1 − α) · KeywordScore
+
+Where:
+
+VectorSim = 1 / (1 + VectorDistance)
+
+VectorDistance = FAISS L2 distance (lower is better)
+
+KeywordScore = normalized keyword match count
+
+α ∈ [0,1] controls weighting between semantic and lexical retrieval
+
+Special Cases:
+
+α = 1 → Pure vector retrieval
+
+α = 0 → Pure keyword retrieval
+
+0 < α < 1 → Hybrid blending
+
+This design allows dynamic control over retrieval behavior.
+
+🛠 Tech Stack
+
+Python
+
+Streamlit (UI Layer)
+
+FAISS (Vector Indexing)
+
+LangChain (Retrieval Pipeline)
+
+Ollama / Local LLM
+
+✨ Key Features
+
+Multi-document ingestion
+
+Hybrid semantic + lexical retrieval
+
+Configurable α weighting
+
+Re-ranking based on blended score
+
+Source transparency with similarity diagnostics
+
+Conversational memory support
+
+Fully local deployment
+
+📦 Installation
+git clone https://github.com/GeoffreyOkwi/HybridRAG.git
+cd HybridRAG
+pip install -r requirements.txt
+streamlit run app.py
+
+📊 Example Use Case
+
+Upload structured documents (e.g., financial reports, technical logs, summaries) and query:
+
+"Summarize in less than ten sentences what these documents reveal."
+
+The system retrieves relevant context using hybrid ranking and generates a grounded response with cited sources.
+
+🔮 Future Improvements
+
+Add retrieval evaluation metrics (Precision@k)
+
+Add score visualization dashboard
+
+Add persistent vector database
+
+Add reranker model (cross-encoder)
+
+Deploy public demo version
+
+👤 Author
+
+Geoffrey Okwi
+Applied AI Systems | Retrieval Engineering | Hybrid Search Architect
